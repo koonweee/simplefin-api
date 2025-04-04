@@ -1,8 +1,8 @@
 # SimpleFIN API TypeScript Client
 
-A TypeScript wrapper for the SimpleFIN API that provides type-safe access to SimpleFIN's financial data aggregation services.
+A (unofficial) TypeScript wrapper for the SimpleFIN API that provides type-safe access to SimpleFIN's financial data aggregation services. This client implements the [SimpleFIN Protocol](https://www.simplefin.org/protocol.html).
 
-## Installation
+## Installation 📦
 
 ```bash
 npm install simplefin-api
@@ -10,65 +10,83 @@ npm install simplefin-api
 
 ## Usage
 
+Basic usage:
+
 ```typescript
 import { SimpleFINClient } from 'simplefin-api';
 
-// Initialize the client
-const client = new SimpleFINClient({
-  baseUrl: 'https://bridge.simplefin.org/simplefin'
-});
+// Claim an access URL using a SimpleFIN token
+const accessUrl = await SimpleFINClient.claimAccessUrl('user-provided-token');
 
-// Get server info
-const info = await client.getInfo();
-console.log(info.versions);
+// Initialize the client with the access URL
+const client = new SimpleFINClient(accessUrl);
 
-// Get the URL for creating a new token
-const createUrl = client.getCreateUrl();
-// Direct user to this URL to get their token
-
-// Claim a token (after user provides it)
-const accessUrl = await client.claimToken('user-provided-token');
-client.setAccessToken(accessUrl);
-
-// Get accounts data
+// Get accounts data with optional filters
 const accounts = await client.getAccounts({
-  start_date: Date.now() - 30 * 24 * 60 * 60 * 1000, // Last 30 days
-  pending: true
+  startDate: Math.floor(Date.now() / 1000) - 30 * 24 * 60 * 60, // Starting 30 days ago
+  includePending: true
 });
+
 console.log(accounts);
 ```
 
-## API Reference
+See/run the example at [examples/main.ts](src/examples/main.ts) using `npm run example`.
+
+## API Reference 📖
 
 ### SimpleFINClient
 
 The main client class for interacting with the SimpleFIN API.
 
+#### Static Methods
+
+- `claimAccessUrl(simplefinToken: string): Promise<string>`: Use a SimpleFIN token to claim an access URL
+
+> **⚠️ Important**: Each SimpleFIN token can only be used to claim an access URL once. The access URL should be securely stored and reused for future requests - attempting to claim the same token again will fail.
+
 #### Constructor
 
 ```typescript
-constructor(config: SimpleFINConfig)
+constructor(accessUrl: string)
 ```
-
-- `config.baseUrl`: The base URL of the SimpleFIN server
-- `config.accessToken`: (Optional) The access token for authenticated requests
 
 #### Methods
 
-- `getInfo()`: Get server information and supported versions
-- `getCreateUrl()`: Get the URL for creating a new SimpleFIN token
-- `claimToken(token: string)`: Claim a SimpleFIN token to get an access URL
-- `getAccounts(params?: AccountsQueryParams)`: Get accounts and transactions data
-- `setAccessToken(accessToken: string)`: Update the access token for authenticated requests
+- `getAccounts(params?: AccountsQueryParams): Promise<AccountSet>`: Retrieves account information and transactions
+  - Optional query parameters:
+    - `startDate`: Start timestamp for transactions (inclusive)
+    - `endDate`: End timestamp for transactions (exclusive)
+    - `includePending`: Include pending transactions (defaults to false)
+    - `accountIds`: If specified, only return transactions for specific accounts
+    - `onlyReturnBalances`: Only return account balances without transactions (defaults to false)
 
 ### Types
 
-The package exports TypeScript interfaces for all SimpleFIN data structures:
-
-- `Organization`
-- `Transaction`
+See the type definitions in [src/types/api.ts](src/types/api.ts) for detailed information about:
 - `Account`
+- `Transaction`
+- `Organization`
 - `AccountSet`
-- `ServerInfo`
-- `SimpleFINConfig`
 - `AccountsQueryParams`
+
+> **💡 Note**: The `Account` and `Transaction` types support additional attributes beyond the standard fields. Different financial services may include extra data like categories, merchant info, or investment details. These additional fields are typed as `any` - you'll need to handle the types appropriately in your code.
+>
+> For example, an investment account might include holdings:
+> ```typescript
+> const account = accountSet.accounts[0];
+>
+> // Type the additional fields you expect
+> interface Holding {
+>   symbol: string;
+>   quantity: number;
+>   price: number;
+> }
+>
+> if (account.holdings) {
+>   // Cast to your expected type
+>   const holdings = account.holdings as Holding[];
+>   holdings.forEach(holding => {
+>     console.log(`${holding.symbol}: ${holding.quantity} shares @ ${holding.price}`);
+>   });
+> }
+> ```
