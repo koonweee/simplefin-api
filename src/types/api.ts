@@ -51,7 +51,7 @@ export interface Account {
   availableBalance?: string;
 
   /** Timestamp when the balance and availableBalance were last updated */
-  balanceDate: Date;
+  balanceDate: number;
 
   /** List of a subset of Transactions for this account, ordered by posted */
   transactions?: Transaction[];

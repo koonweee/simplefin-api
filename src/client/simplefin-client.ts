@@ -3,6 +3,8 @@ import {
   AccountSet,
   AccountsQueryParams
 } from '../types';
+import { AccountSetResponse } from '../types/internal';
+import { parseAccountSet } from './response-parsers';
 
 export class SimpleFINClient {
   private client: AxiosInstance;
@@ -52,7 +54,7 @@ export class SimpleFINClient {
 
     const queryString = queryParams.toString().length > 0 ? `?${queryParams.toString()}` : '';
 
-    const response = await this.client.get(`/accounts${queryString}`);
-    return response.data;
+    const response = await this.client.get<AccountSetResponse>(`/accounts${queryString}`);
+    return parseAccountSet(response.data);
   }
 }
