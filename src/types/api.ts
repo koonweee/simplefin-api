@@ -71,14 +71,6 @@ export interface AccountSet {
   accounts: Account[];
 }
 
-export interface ServerInfo {
-  versions: string[];
-}
-
-export interface SimpleFINClientConfig {
-  accessUrl: string;
-}
-
 export interface AccountsQueryParams {
   /**
    * Start UNIX timestamp in seconds for transactions (inclusive)

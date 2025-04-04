@@ -1,13 +1,11 @@
 import axios, { AxiosInstance } from 'axios';
 import {
   AccountSet,
-  AccountsQueryParams,
-  SimpleFINClientConfig
+  AccountsQueryParams
 } from '../types';
 
 export class SimpleFINClient {
   private client: AxiosInstance;
-  private config: SimpleFINClientConfig;
 
   /**
    * Base64 decodes a SimpleFIN token to get a claim URL
@@ -28,10 +26,9 @@ export class SimpleFINClient {
    * @param config Configuration for the client (access URL)
    * @returns instance of SimpleFIN client
    */
-  constructor(config: SimpleFINClientConfig) {
-    this.config = config;
+  constructor(accessUrl: string) {
     this.client = axios.create({
-      baseURL: config.accessUrl,
+      baseURL: accessUrl,
     });
   }
 
