@@ -4,11 +4,24 @@
   "description": "TypeScript wrapper for the SimpleFIN API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
     "example": "ts-node src/examples/main.ts",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "npm test && npm run build",
+    "publish:public": "npm publish --access public",
+    "publish:private": "npm publish",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    "release:patch": "npm run version:patch && npm run publish:public",
+    "release:minor": "npm run version:minor && npm run publish:public",
+    "release:major": "npm run version:major && npm run publish:public"
   },
   "keywords": [
     "simplefin",
@@ -16,7 +29,7 @@
     "finance",
     "typescript"
   ],
-  "author": "",
+  "author": "Jeremy Tan <koonweee>",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.6.7"
