@@ -11,7 +11,17 @@ export interface Organization {
   id?: string;
 }
 
-export interface Transaction {
+/**
+ * Represents a transaction in a financial account
+ * Note: The interface includes all attributes expected in a SimpleFin Transaction,
+ * but some accounts may have additional attributes. For example:
+ * ```
+ * const transaction: Transaction = <some transaction from SimpleFin>
+ * const memo = transaction.memo
+ * ```
+ * Here, `memo` is an attribute that is not defined in the SimpleFin Transaction interface.
+ */
+export interface Transaction extends Record<string, any> {
   /** Unique identifier for the transaction. Unique within the account */
   id: string;
   /** Timestamp when the transaction was posted (ie. actually cleared) */
@@ -24,14 +34,19 @@ export interface Transaction {
   transactedAt?: number;
   /** Indicated transaction is yet to be posted @default false */
   pending?: boolean;
-  /** Optional extra transaction-specific data not defined in the SimpleFIN standard */
-  extra?: Record<string, any>;
 }
 
 /**
  * Represents a financial account with its associated details and transactions
+ * Note: The interface includes all attributes expected in a SimpleFin Account,
+ * but some accounts may have additional attributes. For example:
+ * ```
+ * const account: Account = <some account from SimpleFin>
+ * const holdings = account.holdings
+ * ```
+ * Here, `holdings` is an array of objects that are not defined in the SimpleFin Account interface.
  */
-export interface Account {
+export interface Account extends Record<string, any> {
   /** Organization from which this account originates */
   org: Organization;
 
@@ -55,9 +70,6 @@ export interface Account {
 
   /** List of a subset of Transactions for this account, ordered by posted */
   transactions?: Transaction[];
-
-  /** Optional extra account-specific data not defined in the SimpleFIN standard */
-  extra?: Record<string, any>;
 }
 
 export interface AccountSet {

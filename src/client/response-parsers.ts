@@ -6,32 +6,44 @@ import { Account, AccountSet, Organization, Transaction } from "../types/api";
 import { AccountResponse, AccountSetResponse, OrganizationResponse, TransactionResponse } from "../types/internal";
 
 export function parseAccountSet(response: AccountSetResponse): AccountSet {
+  const { accounts, ...rest } = response;
   return {
-    ...response,
-    accounts: response.accounts.map(parseAccount),
+    ...rest,
+    accounts: accounts.map(parseAccount),
   };
 }
 
 function parseAccount(response: AccountResponse): Account {
+  const { 'available-balance': availableBalance, 'balance-date': balanceDate, org: orgResponse, transactions: transactionsResponse, id, name, currency, balance, ...rest } = response;
   return {
-    ...response,
-    availableBalance: response['available-balance'],
-    balanceDate: response['balance-date'],
-    org: parseOrganization(response.org),
-    transactions: response.transactions.map(parseTransaction),
+    ...rest,
+    availableBalance,
+    balanceDate,
+    org: parseOrganization(orgResponse),
+    transactions: transactionsResponse.map(parseTransaction),
+    id,
+    name,
+    currency,
+    balance,
   };
 }
 
 function parseOrganization(response: OrganizationResponse): Organization {
+  const { 'sfin-url': sfinUrl, ...rest } = response;
   return {
-    ...response,
-    sfinUrl: response['sfin-url'],
+    ...rest,
+    sfinUrl,
   };
 }
 
 function parseTransaction(response: TransactionResponse): Transaction {
+  const { 'transacted_at': transactedAt, id, posted, amount, description, ...rest } = response;
   return {
-    ...response,
-    transactedAt: response['transacted_at'],
+    ...rest,
+    transactedAt,
+    id,
+    posted,
+    amount,
+    description,
   };
 }

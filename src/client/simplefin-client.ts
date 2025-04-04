@@ -17,7 +17,7 @@ export class SimpleFINClient {
    * @param simplefinToken Base64 encoded token received from user
    * @returns Access URL
    */
-  static async claimAccessURL(simplefinToken: string): Promise<string> {
+  static async claimAccessUrl(simplefinToken: string): Promise<string> {
     const decodedUrl = Buffer.from(simplefinToken, 'base64').toString('utf-8');
     const response = await axios.post(decodedUrl);
     return response.data;
