@@ -1,6 +1,9 @@
 # SimpleFIN API TypeScript Client & Types
 
-A (unofficial) TypeScript wrapper for the SimpleFIN API that provides type-safe access to SimpleFIN's financial data aggregation services. This client implements the [SimpleFIN Protocol](https://www.simplefin.org/protocol.html).
+A (unofficial) TypeScript wrapper for the SimpleFIN API that provides type-safe access to SimpleFIN's financial data aggregation services. This client implements the [SimpleFIN Protocol](https://www.simplefin.org/protocol.html) (v1.0.7-draft as of release).
+
+[![npm version](https://badge.fury.io/js/simplefin-api.svg)](https://www.npmjs.com/package/simplefin-api)
+[![npm downloads](https://img.shields.io/npm/dm/simplefin-api.svg)](https://www.npmjs.com/package/simplefin-api)
 
 ## Installation 📦
 

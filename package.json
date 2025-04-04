@@ -4,6 +4,10 @@
   "description": "TypeScript wrapper for the SimpleFIN API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koonweee/simplefin-api.git"
+  },
   "files": [
     "dist/**/*",
     "README.md"
