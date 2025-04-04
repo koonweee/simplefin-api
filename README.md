@@ -1,4 +1,4 @@
-# SimpleFIN API TypeScript Client
+# SimpleFIN API TypeScript Client & Types
 
 A (unofficial) TypeScript wrapper for the SimpleFIN API that provides type-safe access to SimpleFIN's financial data aggregation services. This client implements the [SimpleFIN Protocol](https://www.simplefin.org/protocol.html).
 
