@@ -1,6 +1,6 @@
 {
   "name": "simplefin-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "TypeScript wrapper for the SimpleFIN API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,7 +36,7 @@
   "author": "Jeremy Tan <koonweee>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.15.2"
+    "axios": "^1.20.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
